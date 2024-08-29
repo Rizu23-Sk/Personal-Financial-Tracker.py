@@ -1,33 +1,58 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Create a DataFrame to store the income data
+# Create a DataFrame to store the financial data
 data = pd.DataFrame(columns=['Type', 'Category', 'Amount'])
 
-# Example: Adding a person's salary
-def add_income(category, amount):
+# Function to add an entry (either income or expense)
+def add_entry(entry_type):
     global data
-    new_entry = pd.DataFrame([{'Type': 'Income', 'Category': category, 'Amount': amount}])
-    data = pd.concat([data, new_entry], ignore_index=True)
+    try:
+        category = input(f"Enter {entry_type.lower()} category (e.g., Salary, Rent, etc.): ").strip()
+        amount = float(input(f"Enter the amount: ").strip())
+        new_entry = pd.DataFrame([{'Type': entry_type, 'Category': category, 'Amount': amount}])
+        data = pd.concat([data, new_entry], ignore_index=True)
+        print(f"\n{entry_type} entry added successfully!")
+    except ValueError:
+        print("\nInvalid input! Please enter a valid number for the amount.")
 
-# Add a sample income entry
-add_income('Salary', 100000)
+# Function to plot income and expenses
+def plot_financial_data():
+    if data.empty:
+        print("\nNo data to plot.")
+    else:
+        plt.figure(figsize=(10, 6))
+        grouped_data = data.groupby(['Type', 'Category']).sum().unstack().fillna(0)
+        grouped_data.plot(kind='bar', stacked=True, color=['skyblue', 'lightcoral'], ax=plt.gca())
+        plt.title('Income and Expenses by Category')
+        plt.xlabel('Type')
+        plt.ylabel('Amount')
+        plt.xticks(rotation=0)
+        plt.tight_layout()
+        plt.show()
 
-# Print the data to console
-print("Data:")
-print(data)
+# Main loop
+def main():
+    while True:
+        print("\nMenu:")
+        print("1. Add Income")
+        print("2. Add Expense")
+        print("3. Plot Income and Expenses")
+        print("4. Exit")
+        choice = input("Choose an option (1-4): ").strip()
 
-# Plot the income data
-def plot_income(data):
-    plt.figure(figsize=(8, 6))
-    data.groupby('Category').sum()['Amount'].plot(kind='bar', color='skyblue')
-    plt.title('Income by Category')
-    plt.xlabel('Category')
-    plt.ylabel('Amount')
-    plt.tight_layout()
+        if choice == '1':
+            add_entry('Income')
+        elif choice == '2':
+            add_entry('Expense')
+        elif choice == '3':
+            plot_financial_data()
+        elif choice == '4':
+            print("\nExiting the program. Goodbye!")
+            break
+        else:
+            print("\nInvalid choice! Please select a valid option.")
 
-    # Show the plot
-    plt.show()
+if __name__ == "__main__":
+    main()
 
-# Generate the plot
-plot_income(data)
