@@ -1,15 +1,16 @@
 # Personal Financial Tracker
 
-This project is a simple personal financial tracker implemented in Python. It allows you to manage and visualize your income and expenses.
+This project is a simple personal financial tracker implemented in Python. It allows you to manage and visualize your income and expenses through a command-line interface.
 
 ## Features
 
 - Add income and expenses
-- Save and load data from a CSV file
-- View summary statistics
-- Generate plots of financial data
+- Plot income and expenses by category
+- Interactive menu for user input
 
 ## Installation
+
+To get started with the Personal Financial Tracker, follow these steps:
 
 ### Clone the Repository
 
